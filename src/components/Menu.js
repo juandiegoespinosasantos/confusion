@@ -1,5 +1,11 @@
+/**
+ * Front-End Web Development with React - Week 1, assignment 1
+ * @author https://github.com/juandiegoespinosasantos
+ * @since Jul 20, 2020
+ */
 import React from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardTitle } from 'reactstrap';
+import DishDetail from './DishDetail';
 
 class Menu extends React.Component {
 
@@ -17,21 +23,8 @@ class Menu extends React.Component {
         });
     }
 
-    renderDish(dish) {
-        if (dish == null) {
-            return(<div></div>);
-        } 
-            
-        return (
-            <Card>
-               <CardImg width="100%" src={dish.image} alt={dish.name} />
-
-                <CardBody>
-                    <CardTitle>{dish.name}</CardTitle>
-                    <CardText>{dish.description}</CardText>
-                </CardBody> 
-            </Card>
-        );
+    renderDish(dish) {           
+        return (<DishDetail selectedDish={dish} />);
     }
 
     render() {
@@ -55,9 +48,7 @@ class Menu extends React.Component {
                     {menu}                    
                 </div>
 
-                <div className="row">
-                    {this.renderDish(this.state.selectedDish)}
-                </div>
+                {this.renderDish(this.state.selectedDish)}
             </div>
         );
     }
