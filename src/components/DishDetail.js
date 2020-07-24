@@ -6,11 +6,8 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
+// Presentational Component
 class DishDetail extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     renderDish(dish) {
         return (
@@ -40,7 +37,7 @@ class DishDetail extends React.Component {
                             return (
                                 <li key={comment.id}>
                                     <p className="font-italic">{comment.comment}</p>
-                                    <p> - {comment.author}, {new Date(comment.date).getFullYear()} </p>
+                                    <p> - {comment.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))} </p>
                                 </li>
                             )
                         })
@@ -51,20 +48,22 @@ class DishDetail extends React.Component {
     }
 
     render() {
-        const dish = this.props.selectedDish;
+        const dish = this.props.dish;
 
         if (dish == null) {
             return (<div></div>);
         }
 
         return (
-            <div className="row">
-                <div className="col-xs-12 col-sm-12 col-md-5 m-1">
-                    {this.renderDish(dish)}
-                </div>
+            <div className="container">
+                <div className="row">
+                    <div className="col-xs-12 col-sm-12 col-md-5 m-1">
+                        {this.renderDish(dish)}
+                    </div>
 
-                <div className="col-xs-12 col-sm-12 col-md-5 m-1">
-                    {this.renderComments(dish.comments)}
+                    <div className="col-xs-12 col-sm-12 col-md-5 m-1">
+                        {this.renderComments(dish.comments)}
+                    </div>
                 </div>
             </div>
         );
