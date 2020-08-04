@@ -1,14 +1,21 @@
+/**
+ * Front-End Web Development with React - Week 2, assignment 2
+ * @author https://github.com/juandiegoespinosasantos
+ * @since Aug 03, 2020
+ */
+
 import React from 'react';
 import Header from './HeaderComponent';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import DishDetail from './DishDetailComponent';
+import AboutUs from './AboutUsComponent';
 import Contact from './ContactComponent';
 import Footer from './FooterComponent';
-import {DISHES} from '../shared/dishes';
-import {COMMENTS} from '../shared/comments';
-import {LEADERS} from '../shared/leaders';
-import {PROMOTIONS} from '../shared/promotions';
+import { DISHES } from '../shared/dishes';
+import { COMMENTS } from '../shared/comments';
+import { LEADERS } from '../shared/leaders';
+import { PROMOTIONS } from '../shared/promotions';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 // Container Component
@@ -28,11 +35,12 @@ class Main extends React.Component {
     render() {
         const HomePage = () => {
             return (
-            <Home 
-                dish={this.state.dishes.filter((dish) => dish.featured)[0]}
-                promotion={this.state.promotions.filter((promo) => promo.featured)[0]}
-                leader={this.state.leaders.filter((leader) => leader.featured)[0]} 
-            />);
+                <Home 
+                    dish={this.state.dishes.filter((dish) => dish.featured)[0]}
+                    promotion={this.state.promotions.filter((promo) => promo.featured)[0]}
+                    leader={this.state.leaders.filter((leader) => leader.featured)[0]} 
+                />
+            );
         }
 
         const DishWithId = ({match}) => {
@@ -50,6 +58,7 @@ class Main extends React.Component {
                 
                 <Switch>
                     <Route path="/home" component={HomePage} />
+                    <Route exact path="/aboutus" component={() => <AboutUs leaders={this.state.leaders} />} />
                     <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
                     <Route path="/menu/:dishId" component={DishWithId} />
                     <Route exact path="/contactus" component={Contact} />
