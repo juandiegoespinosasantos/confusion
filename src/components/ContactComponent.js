@@ -1,5 +1,5 @@
 import React from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col, FormFeedback } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 class Contact extends React.Component {
@@ -14,7 +14,13 @@ class Contact extends React.Component {
             email: '',
             agree: false,
             contactType: 'Tel.',
-            feedback: ''
+            feedback: '',
+            touched: {
+                firstname: false,
+                lastname: false,
+                telnum: false,
+                email: false
+            }
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -38,8 +44,49 @@ class Contact extends React.Component {
 
         event.preventDefault();
     }
-    
+
+    handleBlur = (field) => (evt) => {
+        this.setState({
+            touched: {
+                ...this.state.touched, [field]: true
+            }
+        });
+    }
+
+    validate(firstname, lastname, telnum, email) {
+        const errors = {
+            firstname: '',
+            lastname: '',
+            telnum: '',
+            email: '',
+        }
+
+        if (this.state.touched.firstname && (firstname.trim().length === 0)) {
+            errors.firstname = 'First Name is required.';
+        } 
+
+        if (this.state.touched.lastname && (lastname.trim().length === 0)) {
+            errors.lastname = 'Last Name is required.';
+        }
+
+        const telnumRegex = /[0-9]/;
+
+        if (this.state.touched.telnum && !telnumRegex.test(telnum)) {
+            errors.telnum = 'Phone must contain only numbers.';
+        }
+        
+        const emailRegex = /\S+@\S+\.\S+/;
+
+        if (this.state.touched.email && !emailRegex.test(email)) {
+            errors.email = 'E-mail not valid';
+        }
+
+        return errors;
+    }
+
     render() {
+        const errors = this.validate(this.state.firstname, this.state.lastname, this.state.telnum, this.state.email);
+
         return (
             <div className="container">
                 <div className="row">
@@ -96,33 +143,37 @@ class Contact extends React.Component {
                             <FormGroup row>
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
-                                    <Input type="text" id="firstname" name="firstname" placeholder="First Name" value={this.state.firstname} onChange={this.handleInputChange} />
+                                    <Input type="text" id="firstname" name="firstname" placeholder="First Name" value={this.state.firstname} onChange={this.handleInputChange} onBlur={this.handleBlur('firstname')} valid={errors.firstname === ''} invalid={errors.firstname !== ''} />
+                                    <FormFeedback>{errors.firstname}</FormFeedback>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label htmlFor="lastname" md={2}>Last Name</Label>
                                 <Col md={10}>
-                                    <Input type="text" id="lastname" name="lastname" placeholder="Last Name" value={this.state.lastname} onChange={this.handleInputChange} />
+                                    <Input type="text" id="lastname" name="lastname" placeholder="Last Name" value={this.state.lastname} onChange={this.handleInputChange} onBlur={this.handleBlur('lastname')} valid={errors.lastname === ''} invalid={errors.lastname !== ''} />
+                                    <FormFeedback>{errors.lastname}</FormFeedback>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label htmlFor="telnum" md={2}>Phone</Label>
                                 <Col md={10}>
-                                    <Input type="tel" id="telnum" name="telnum" placeholder="Phone" value={this.state.telnum} onChange={this.handleInputChange} />
+                                    <Input type="tel" id="telnum" name="telnum" placeholder="Phone" value={this.state.telnum} onChange={this.handleInputChange} onBlur={this.handleBlur('telnum')} valid={errors.telnum === ''} invalid={errors.telnum !== ''} />
+                                    <FormFeedback>{errors.telnum}</FormFeedback>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label htmlFor="email" md={2}>E-mail</Label>
                                 <Col md={10}>
-                                    <Input type="email" id="email" name="email" placeholder="E-mail" value={this.state.email} onChange={this.handleInputChange} />
+                                    <Input type="email" id="email" name="email" placeholder="E-mail" value={this.state.email} onChange={this.handleInputChange} onBlur={this.handleBlur('email')} valid={errors.email === ''} invalid={errors.email !== ''} />
+                                    <FormFeedback>{errors.email}</FormFeedback>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
-                                <Col md={{size: 6, offset: 2}}>
+                                <Col md={{ size: 6, offset: 2 }}>
                                     <FormGroup check>
                                         <Label check>
                                             <Input type="checkbox" name="agree" checked={this.state.agree} onChange={this.handleInputChange} /> {' '}
@@ -131,7 +182,7 @@ class Contact extends React.Component {
                                     </FormGroup>
                                 </Col>
 
-                                <Col md={{size: 3, offset: 1}}>
+                                <Col md={{ size: 3, offset: 1 }}>
                                     <Input type="select" name="contactType" value={this.state.contactType} onChange={this.handleInputChange}>
                                         <option>Tel.</option>
                                         <option>Email</option>
@@ -147,7 +198,7 @@ class Contact extends React.Component {
                             </FormGroup>
 
                             <FormGroup>
-                                <Col md={{size: 10, offset: 2}}>
+                                <Col md={{ size: 10, offset: 2 }}>
                                     <Button type="submit" color="primary">Send Feedback</Button>
                                 </Col>
                             </FormGroup>
