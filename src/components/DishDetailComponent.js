@@ -33,7 +33,8 @@ class CommentForm extends React.Component {
     }
 
     handleSubmit(values) {
-        alert(JSON.stringify(values));
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.author, values.rating, values.comment);
     }
 
     render() {
@@ -111,7 +112,7 @@ function RenderDish({ dish }) {
     );
 }
 
-function RenderComments({ dishName, comments }) {
+function RenderComments({ dishName, comments, addComment, dishId }) {
     if (comments == null) {
         return (<div></div>);
     }
@@ -131,7 +132,7 @@ function RenderComments({ dishName, comments }) {
                 })}
             </ul>
 
-            <CommentForm dishName={dishName} />
+            <CommentForm dishName={dishName} dishId={dishId} addComment={addComment} />
         </div>
     );
 }
@@ -162,7 +163,7 @@ function DishDetail(props) {
             <div className="row">
                 <RenderDish dish={dish} />
 
-                <RenderComments dishName={dish.name} comments={props.comments} />
+                <RenderComments dishName={dish.name} comments={props.comments} addComment={props.addComment} dishId={props.dish.id} />
             </div>
         </div>
     );
