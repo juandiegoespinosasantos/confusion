@@ -1,7 +1,13 @@
+/**
+ * Front-End Web Development with React - Week 4, assignment 4
+ * @author https://github.com/juandiegoespinosasantos
+ * @since Aug 19, 2020
+ */
+
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Button, Row, Col, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Control, Form, Errors, actions } from 'react-redux-form';
+import { Control, Form, Errors } from 'react-redux-form';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -20,8 +26,7 @@ class Contact extends React.Component {
     handleSubmit(values) {
         console.log("Current state is: " + JSON.stringify(values));
 
-        alert("Current state is: " + JSON.stringify(values));
-
+        this.props.sendFeedback(values.firstname, values.lastname, values.telnum, values.email, values.agree, values.contactType, values.feedback);
         this.props.resetFeedbackForm();
         // event.preventDefault();
     }

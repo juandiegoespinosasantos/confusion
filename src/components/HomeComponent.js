@@ -1,3 +1,9 @@
+/**
+ * Front-End Web Development with React - Week 4, assignment 4
+ * @author https://github.com/juandiegoespinosasantos
+ * @since Aug 19, 2020
+ */
+
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import { Loading } from './LoadingComponent';
@@ -41,7 +47,7 @@ function Home(props) {
                 </div>
 
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.leader} />
+                    <RenderCard item={props.leader} isLoading={props.leaderLoading} errorMessage={props.leaderErrorMessage} />
                 </div>
             </div>
         </div>

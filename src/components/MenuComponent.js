@@ -47,7 +47,7 @@ function Menu(props) {
         return (
             <div className="container">
                 <div className="row">
-                    <h4>{props.errorMessessage}</h4>
+                    <h4>{props.dishes.errorMessage}</h4>
                 </div>
             </div>
         );
